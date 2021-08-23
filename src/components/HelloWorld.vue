@@ -2,7 +2,85 @@
  
   <div class="hello"> 
     <h2>Bid Table</h2>
-    <div class="bid-table">
+    <v-card
+    class="mx-auto"
+    max-width="500"
+  >
+   
+
+    <v-toolbar
+      color="indigo"
+      dark
+    >
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+
+      <v-toolbar-title>Discover</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-btn icon>
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+    </v-toolbar>
+
+    <v-container fluid>
+      <v-row dense>
+        <v-col
+          v-for="card in cards"
+          :key="card.title"
+          :cols="card.flex"
+        >
+          <v-card>
+            <v-img
+              :src="card.src"
+              class="white--text align-end"
+              gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+              height="200px"
+            >
+              <v-card-title v-text="card.title"></v-card-title>
+            </v-img>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+
+              <v-btn icon>
+                <v-icon>mdi-heart</v-icon>
+              </v-btn>
+
+              <v-btn icon>
+                <v-icon>mdi-bookmark</v-icon>
+              </v-btn>
+
+              <v-btn icon>
+                <v-icon>mdi-share-variant</v-icon>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-card>
+    
+    <v-card class="bid-table">
+    <v-overlay
+          :absolute="absolute"
+          :value="overlay"
+        > 
+        <v-btn-toggle>
+          <v-btn>
+            {{team[0].name}}
+          </v-btn>
+          <v-btn>
+            {{team[1].name}}
+          </v-btn>
+        </v-btn-toggle>
+        <v-btn
+            color="success"
+            @click="overlay = false"
+          >
+            Score Round
+          </v-btn>
+        </v-overlay>
     <v-row>
    <v-col>
    </v-col>
@@ -44,7 +122,8 @@
           <v-col
             v-for="bid in bidSheet.Seven"
             :key="bid.index">
-              <v-btn>
+              <v-btn
+              @click= "makeABid()"">
                 {{bid.points}}
               </v-btn>
           </v-col>
@@ -113,7 +192,7 @@
       </v-col>
      
     </v-row>
-    </div>
+    </v-card>
     
     <v-icon> {{bidSheet.Six.spades.icon}} </v-icon>
     <v-icon>mdi-cards-spade</v-icon>
@@ -136,6 +215,8 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
+      overlay: false,
+      absolute: true,
       team: [{name:"Us", bid: "", score: 0},{name: "Them", bid:"", score: 0} ],
       bidder: 0,
       bidSheet: {"Six": {
@@ -168,8 +249,17 @@ export default {
       
     },
     makeABid: function (bid) {
+      //what is the bid?
+      // who is making it
+      this.overlay= true
       return null
+    },
+    scoreRound: function() {
+      //what was the result of the bid?
+      //how many points did the other team make
+      //update the teams' score
     } 
+    
   } 
 }
 </script>

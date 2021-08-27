@@ -1,9 +1,11 @@
 <template>
+<v-app>
   <div id="app">
     
      
     <five-hundred/>
   </div>
+</v-app>
 </template>
 
 <script>

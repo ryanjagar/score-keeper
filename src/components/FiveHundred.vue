@@ -1,7 +1,7 @@
 <template>
  
   <div class="hello"> 
-    <h2>Bid Table</h2>
+    
     <v-card
     class="mx-auto"
     max-width="500"
@@ -9,58 +9,44 @@
    
 
     <v-toolbar
-      color="indigo"
-      dark
+      color=""
     >
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
-
-      <v-toolbar-title>Discover</v-toolbar-title>
-
+      <v-spacer />
+      <v-toolbar-title> <h2>Score </h2> </v-toolbar-title>
+    
       <v-spacer></v-spacer>
 
-      <v-btn icon>
-        <v-icon>mdi-magnify</v-icon>
-      </v-btn>
+     
     </v-toolbar>
 
     <v-container>
       <v-row dense>
         <v-col
-          v-for="card in cards"
-          :key="card.title"
-          :cols="card.flex"
+          v-for="team in teams"
+          :key="team.name"
+          cols= 6
         >
           <v-card>
             <v-img
-              :src="card.src"
+              :src=team.img
               class="white--text align-end"
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
               height="200px"
             >
-              <v-card-title v-text="card.title"></v-card-title>
+          
+              <v-card-title v-text="team.name"></v-card-title>
+              <v-spacer />
+              <v-card-text> <h1> {{team.score}}  </h1> </v-card-text>
             </v-img>
 
-            <v-card-actions>
-              <v-spacer></v-spacer>
-
-              <v-btn icon>
-                <v-icon>mdi-heart</v-icon>
-              </v-btn>
-
-              <v-btn icon>
-                <v-icon>mdi-bookmark</v-icon>
-              </v-btn>
-
-              <v-btn icon>
-                <v-icon>mdi-share-variant</v-icon>
-              </v-btn>
-            </v-card-actions>
+            
           </v-card>
         </v-col>
       </v-row>
     </v-container>
   </v-card>
     <br />
+    <h2>Bid Table</h2>
     <v-card class="bid-table">
     <v-overlay
           :absolute="absolute"
@@ -68,10 +54,10 @@
         > 
         <v-btn-toggle>
           <v-btn>
-            {{team[0].name}}
+            {{teams[0].name}}
           </v-btn>
           <v-btn>
-            {{team[1].name}}
+            {{teams[1].name}}
           </v-btn>
         </v-btn-toggle>
         <v-btn
@@ -200,8 +186,8 @@
     End bid table
     
     <div class="score">
-    {{team[0].name}}
-    {{team[1].name}}
+    {{teams[0].name}}
+    {{teams[1].name}}
     </div>
     
    
@@ -217,24 +203,26 @@ export default {
     return {
       overlay: false,
       absolute: true,
-      team: [{name:"Us", bid: "", score: 0},{name: "Them", bid:"", score: 0} ],
+      teams: [{"name":"Us", "bid": "", "score": 0, "img": "https://picsum.photos/200"},{"name": "Them", "bid":"", "score": 0, "img": "https://picsum.photos/201"} ],
       bidder: 0,
-      bidSheet: {"Six": {
-                      "spades": {"points": 40, "shortCode": "6S", "icon": "mdi-cards-spade" },
-                      "clubs": {"points": 60, "shortCode": "6C", "icon": "mdi-cards-club" },
-                      "diamonds": {"points": 80, "shortCode": "6D", "icon": "mdi-cards-diamond" },
-                      "hearts": {"points": 100, "shortCode": "6H", "icon": "mdi-cards-heart" },
-                      "notrump":{"points": 120, "shortCode": "6NT", "icon": "mdi-cards" }
-                    },
-                    "Seven": {
-                      "spades": {"points": 140, "shortCode": "6S", "icon": "mdi-cards-spade" },
-                      "clubs": {"points": 160, "shortCode": "6C", "icon": "mdi-cards-club" },
-                      "diamonds": {"points": 180, "shortCode": "6D", "icon": "mdi-cards-diamond" },
-                      "hearts": {"points": 200, "shortCode": "6H", "icon": "mdi-cards-heart" },
-                      "notrump":{"points": 220, "shortCode": "6NT", "icon": "mdi-cards" }
-                    }
-                  },
-                   game: {"currentBid":{}, "history": []}
+      //bidSheet should be a added as a mixin
+      bidSheet: {
+        "Six": {
+          "spades": {"points": 40, "shortCode": "6S", "icon": "mdi-cards-spade" },
+          "clubs": {"points": 60, "shortCode": "6C", "icon": "mdi-cards-club" },
+          "diamonds": {"points": 80, "shortCode": "6D", "icon": "mdi-cards-diamond" },
+          "hearts": {"points": 100, "shortCode": "6H", "icon": "mdi-cards-heart" },
+          "notrump":{"points": 120, "shortCode": "6NT", "icon": "mdi-cards" }
+        },
+        "Seven": {
+          "spades": {"points": 140, "shortCode": "6S", "icon": "mdi-cards-spade" },
+          "clubs": {"points": 160, "shortCode": "6C", "icon": "mdi-cards-club" },
+          "diamonds": {"points": 180, "shortCode": "6D", "icon": "mdi-cards-diamond" },
+          "hearts": {"points": 200, "shortCode": "6H", "icon": "mdi-cards-heart" },
+          "notrump":{"points": 220, "shortCode": "6NT", "icon": "mdi-cards" }
+        }
+      },
+      game: {"currentBid":{}, "history": []}
     
       
     }             

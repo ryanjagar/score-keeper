@@ -23,7 +23,7 @@
       </v-btn>
     </v-toolbar>
 
-    <v-container fluid>
+    <v-container>
       <v-row dense>
         <v-col
           v-for="card in cards"
@@ -60,7 +60,7 @@
       </v-row>
     </v-container>
   </v-card>
-    
+    <br />
     <v-card class="bid-table">
     <v-overlay
           :absolute="absolute"
@@ -123,7 +123,7 @@
             v-for="bid in bidSheet.Seven"
             :key="bid.index">
               <v-btn
-              @click= "makeABid()"">
+              @click= "makeABid()">
                 {{bid.points}}
               </v-btn>
           </v-col>
@@ -212,7 +212,7 @@
 
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'FiveHundred',
   data () {
     return {
       overlay: false,

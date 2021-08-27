@@ -2,17 +2,17 @@
   <div id="app">
     
      
-    <HelloWorld/>
+    <five-hundred/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+import FiveHundred from './components/FiveHundred'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    FiveHundred
   }
 }
 </script>

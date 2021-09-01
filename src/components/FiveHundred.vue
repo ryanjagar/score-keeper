@@ -29,14 +29,14 @@
           <v-card>
             <v-img
               :src=team.img
-              class="white--text align-end"
+              class="white--text align-top"
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
               height="200px"
             >
           
               <v-card-title v-text="team.name"></v-card-title>
               <v-spacer />
-              <v-card-text> <h1> {{team.score}}  </h1> </v-card-text>
+               <div class="text-h1"> {{team.score}}  </div>
             </v-img>
 
             
@@ -67,7 +67,8 @@
             Score Round
           </v-btn>
         </v-overlay>
-    <v-row>
+  
+   <v-row>
    <v-col>
    </v-col>
         <v-col>
@@ -203,7 +204,7 @@ export default {
     return {
       overlay: false,
       absolute: true,
-      teams: [{"name":"Us", "bid": "", "score": 0, "img": "https://picsum.photos/200"},{"name": "Them", "bid":"", "score": 0, "img": "https://picsum.photos/201"} ],
+      teams: [{"name":"Us", "bid": "", "score": 210, "img": "https://picsum.photos/200"},{"name": "Them", "bid":"", "score": -400, "img": "https://picsum.photos/201"} ],
       bidder: 0,
       //bidSheet should be a added as a mixin
       bidSheet: {

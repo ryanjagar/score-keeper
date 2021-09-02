@@ -1,12 +1,11 @@
 <template>
  
   <div class="hello"> 
-    
+
     <v-card
     class="mx-auto"
     max-width="500"
-  >
-   
+    >
 
     <v-toolbar
       color=""
@@ -47,7 +46,10 @@
     </v-container>
   </v-card>
   <h2>Bid Table</h2>
-    <v-card class="bid-table pa-5">
+    <v-card 
+      class="bid-table pa-5 mx-auto"
+      max-width="500"
+    >
     <v-overlay
           :absolute="absolute"
           :value="overlay"
@@ -79,7 +81,7 @@
           </v-btn>
         </v-overlay>
   
-   <v-row>
+   <v-row dense>
    <v-col>
    </v-col>
         <v-col>
@@ -98,98 +100,22 @@
           No Trump
         </v-col>
     </v-row>
-    <v-row>
+    <v-row 
+      v-for="(bids, index) in bidSheet" :key="bids.index" 
+      dense
+    >
       <v-col>
-        <v-row>
-          <v-col>
-            Six
-          </v-col>
-          <v-col
-            v-for="bid in bidSheet.Six"
-            :key="bid.index">
-              <v-btn>
-                {{bid.points}}
-              </v-btn>
-          </v-col> 
-        </v-row>
-        
-        <v-row>
-          <v-col>
-            Seven
-          </v-col>
-          <v-col
-            v-for="bid in bidSheet.Seven"
-            :key="bid.index">
-              <v-btn
-              @click= "makeABid(bid)">
-                {{bid.points}}
-              </v-btn>
-          </v-col>
-        </v-row>
-        <v-row>
-          <v-col>
-            Eight
-          </v-col>
-            <v-col>
-            <v-btn>240 </v-btn>
-          </v-col>
-          <v-col>
-            <v-btn>260</v-btn>
-          </v-col>
-          <v-col>
-             <v-btn> 280 </v-btn>
-            </v-col>
-            <v-col>
-              <v-btn> 300 </v-btn>
-            </v-col>
-            <v-col>
-              <v-btn> 320 </v-btn>
-            </v-col>
-          </v-row>
-          <v-row>
-           <v-col>
-            Nine
-            </v-col>
-            <v-col>
-            <v-btn>340 </v-btn>
-          </v-col>
-          <v-col>
-            <v-btn>360</v-btn>
-          </v-col>
-          <v-col>
-             <v-btn> 380 </v-btn>
-            </v-col>
-            <v-col>
-              <v-btn> 400 </v-btn>
-            </v-col>
-            <v-col>
-              <v-btn> 420 </v-btn>
-            </v-col>
-          </v-row>
-          <v-row>
-          <v-col>
-            Ten
-            </v-col>
-            <v-col>
-            <v-btn>440 </v-btn>
-          </v-col>
-          <v-col>
-            <v-btn>460</v-btn>
-          </v-col>
-          <v-col>
-             <v-btn> 480 </v-btn>
-            </v-col>
-            <v-col>
-              <v-btn> 500 </v-btn>
-            </v-col>
-            <v-col>
-              <v-btn> 520 </v-btn>
-            </v-col>
-          </v-row>
-       
+        {{index}}
       </v-col>
-     
+       <v-col
+          v-for="bid in bids"
+          :key="bid.index">
+            <v-btn @click= "makeABid(bid)">
+              {{bid.points}}
+            </v-btn>
+       </v-col>
     </v-row>
+    
     </v-card>
     
     <v-icon> {{bidSheet.Six.spades.icon}} </v-icon>
@@ -227,11 +153,18 @@ export default {
           "notrump":{"points": 120, "shortCode": "6NT", "icon": "mdi-cards" }
         },
         "Seven": {
-          "spades": {"points": 140, "shortCode": "6S", "icon": "mdi-cards-spade" },
-          "clubs": {"points": 160, "shortCode": "6C", "icon": "mdi-cards-club" },
-          "diamonds": {"points": 180, "shortCode": "6D", "icon": "mdi-cards-diamond" },
-          "hearts": {"points": 200, "shortCode": "6H", "icon": "mdi-cards-heart" },
-          "notrump":{"points": 220, "shortCode": "6NT", "icon": "mdi-cards" }
+          "spades": {"points": 140, "shortCode": "7S", "icon": "mdi-cards-spade" },
+          "clubs": {"points": 160, "shortCode": "7C", "icon": "mdi-cards-club" },
+          "diamonds": {"points": 180, "shortCode": "7D", "icon": "mdi-cards-diamond" },
+          "hearts": {"points": 200, "shortCode": "7H", "icon": "mdi-cards-heart" },
+          "notrump":{"points": 220, "shortCode": "7NT", "icon": "mdi-cards" }
+        },
+        "Eight": {
+          "spades": {"points": 240, "shortCode": "8S", "icon": "mdi-cards-spade" },
+          "clubs": {"points": 260, "shortCode": "8C", "icon": "mdi-cards-club" },
+          "diamonds": {"points": 280, "shortCode": "8D", "icon": "mdi-cards-diamond" },
+          "hearts": {"points": 300, "shortCode": "8H", "icon": "mdi-cards-heart" },
+          "notrump":{"points": 320, "shortCode": "8NT", "icon": "mdi-cards" }
         }
       },
       game: {"currentBid":{}, "history": []}

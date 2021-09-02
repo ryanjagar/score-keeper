@@ -18,25 +18,29 @@
 
      
     </v-toolbar>
-
+    {{game.currentRound}}
     <v-container>
       <v-row dense>
         <v-col
-          v-for="team in teams"
+          v-for="(team, index) in teams"
           :key="team.name"
           cols= 6
         >
+          <!--<v-card
+            @click="game.currentRound=team"> -->
           <v-card>
             <v-img
               :src=team.img
               class="white--text align-top"
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
               height="200px"
+              
             >
               
               <v-card-title v-text="team.name" class="text-h3"> </v-card-title>
               
                <div class="text-h1"> {{team.score}}  </div>
+               {{index}}
             </v-img>
 
             
@@ -45,26 +49,80 @@
       </v-row>
     </v-container>
   </v-card>
-  <h2>Bid Table</h2>
+  <div class="pt-5 pb-2 text-h4">
+  Bid Table
+  </div>
     <v-card 
-      class="bid-table pa-5 mx-auto"
+      class="bid-table  mx-auto"
       max-width="500"
     >
-    <v-overlay
-          :absolute="absolute"
-          :value="overlay"
-        > 
-        <v-btn-toggle>
-          <v-btn>
+
+   
+    
+
+    <v-card-text>
+      <v-row dense>
+    <v-col>
+    </v-col>
+          <v-col>
+            Spades
+          </v-col>
+          <v-col>
+            Clubs
+          </v-col>
+          <v-col>
+            Diamonds
+          </v-col>
+          <v-col>
+            Hearts
+          </v-col>
+          <v-col>
+            No Trump
+          </v-col>
+      </v-row>
+      <v-row 
+        v-for="(bids, index) in bidSheet" :key="bids.index" 
+        dense
+      >
+        <v-col>
+          {{index}}
+        </v-col>
+        <v-col
+            v-for="bid in bids"
+            :key="bid.index">
+              <v-btn @click= "makeABid(bid)">
+                {{bid.points}}
+              </v-btn>
+        </v-col>
+      </v-row>
+    </v-card-text>
+
+    <v-expand-transition
+        v-if="overlay"
+        >
+    <v-card
+      class="transition-fast-in-fast-out v-card--reveal"
+      style="height: 100%;"
+    >
+    
+    <v-card-text>
+      <div class="text-center text-h4 pb-4">
+      Whose bid is it?</div>
+      <v-btn-toggle>
+        <v-btn>
             {{teams[0].name}}
-          </v-btn>
-          <v-btn>
-            {{teams[1].name}}
-          </v-btn>
-        </v-btn-toggle>
-        <br />
-        {{game.currentBid}}
-        <br />
+        </v-btn>
+        <v-btn>
+          {{teams[1].name}}
+        </v-btn>
+
+        
+      </v-btn-toggle>
+      <div class="text-center text-h4 pa-4">
+        {{game.currentRound.bid.shortCode[0]}}
+        <v-icon large> {{game.currentRound.bid.icon}} </v-icon>
+   
+      </div>
 
         <v-btn
             color="success"
@@ -79,57 +137,13 @@
           >
             Cancel
           </v-btn>
-        </v-overlay>
-  
-   <v-row dense>
-   <v-col>
-   </v-col>
-        <v-col>
-          Spades
-        </v-col>
-        <v-col>
-          Clubs
-        </v-col>
-        <v-col>
-          Diamonds
-        </v-col>
-        <v-col>
-          Hearts
-        </v-col>
-        <v-col>
-          No Trump
-        </v-col>
-    </v-row>
-    <v-row 
-      v-for="(bids, index) in bidSheet" :key="bids.index" 
-      dense
-    >
-      <v-col>
-        {{index}}
-      </v-col>
-       <v-col
-          v-for="bid in bids"
-          :key="bid.index">
-            <v-btn @click= "makeABid(bid)">
-              {{bid.points}}
-            </v-btn>
-       </v-col>
-    </v-row>
+          </v-card-text>
+        </v-card>
+      </v-expand-transition>
+        <!-- </v-overlay> -->
     
     </v-card>
     
-    <v-icon> {{bidSheet.Six.spades.icon}} </v-icon>
-    <v-icon>mdi-cards-spade</v-icon>
-    
-    End bid table
-    
-    <div class="score">
-    {{teams[0].name}}
-    {{teams[1].name}}
-    </div>
-    
-   
-    <hr />
    
   </div>
 </template>
@@ -165,9 +179,27 @@ export default {
           "diamonds": {"points": 280, "shortCode": "8D", "icon": "mdi-cards-diamond" },
           "hearts": {"points": 300, "shortCode": "8H", "icon": "mdi-cards-heart" },
           "notrump":{"points": 320, "shortCode": "8NT", "icon": "mdi-cards" }
+        },
+        "Nine": {
+          "spades": {"points": 340, "shortCode": "9S", "icon": "mdi-cards-spade" },
+          "clubs": {"points": 360, "shortCode": "9C", "icon": "mdi-cards-club" },
+          "diamonds": {"points": 380, "shortCode": "9D", "icon": "mdi-cards-diamond" },
+          "hearts": {"points": 400, "shortCode": "9H", "icon": "mdi-cards-heart" },
+          "notrump":{"points": 420, "shortCode": "9NT", "icon": "mdi-cards" }
+        },
+        "Ten": {
+          "spades": {"points": 440, "shortCode": "10S", "icon": "mdi-cards-spade" },
+          "clubs": {"points": 460, "shortCode": "10C", "icon": "mdi-cards-club" },
+          "diamonds": {"points": 480, "shortCode": "10D", "icon": "mdi-cards-diamond" },
+          "hearts": {"points": 500, "shortCode": "10H", "icon": "mdi-cards-heart" },
+          "notrump":{"points": 520, "shortCode": "10NT", "icon": "mdi-cards" }
         }
       },
-      game: {"currentBid":{}, "history": []}
+      game: {"currentRound":{
+                "team": {},
+                "bid":{}
+              } , 
+            "history": []}
     
       
     }             
@@ -182,7 +214,7 @@ export default {
       
     },
     makeABid: function (bid) {
-      this.game.currentBid = bid
+      this.game.currentRound.bid = bid
       //what is the bid?
       // who is making it
       this.overlay= true
@@ -214,5 +246,11 @@ li {
 }
 a {
   color: #42b983;
+}
+.v-card--reveal {
+bottom: 0;
+opacity: 1 !important;
+position: absolute;
+width: 100%;
 }
 </style>

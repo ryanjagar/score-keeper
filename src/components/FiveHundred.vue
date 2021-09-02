@@ -10,8 +10,9 @@
 
     <v-toolbar
       color=""
+      dark
     >
-      <v-spacer />
+      <v-spacer> </v-spacer>
       <v-toolbar-title> <h2>Score </h2> </v-toolbar-title>
     
       <v-spacer></v-spacer>
@@ -33,9 +34,9 @@
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
               height="200px"
             >
-          
-              <v-card-title v-text="team.name"></v-card-title>
-              <v-spacer />
+              
+              <v-card-title v-text="team.name" class="text-h3"> </v-card-title>
+              
                <div class="text-h1"> {{team.score}}  </div>
             </v-img>
 
@@ -45,9 +46,8 @@
       </v-row>
     </v-container>
   </v-card>
-    <br />
-    <h2>Bid Table</h2>
-    <v-card class="bid-table">
+  <h2>Bid Table</h2>
+    <v-card class="bid-table pa-5">
     <v-overlay
           :absolute="absolute"
           :value="overlay"
@@ -60,11 +60,22 @@
             {{teams[1].name}}
           </v-btn>
         </v-btn-toggle>
+        <br />
+        {{game.currentBid}}
+        <br />
+
         <v-btn
             color="success"
             @click="overlay = false"
           >
             Score Round
+          </v-btn>
+          
+        <v-btn
+            color="error"
+            @click="overlay = false"
+          >
+            Cancel
           </v-btn>
         </v-overlay>
   
@@ -110,15 +121,15 @@
             v-for="bid in bidSheet.Seven"
             :key="bid.index">
               <v-btn
-              @click= "makeABid()">
+              @click= "makeABid(bid)">
                 {{bid.points}}
               </v-btn>
           </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
+        </v-row>
+        <v-row>
+          <v-col>
             Eight
-            </v-col>
+          </v-col>
             <v-col>
             <v-btn>240 </v-btn>
           </v-col>
@@ -238,9 +249,11 @@ export default {
       
     },
     makeABid: function (bid) {
+      this.game.currentBid = bid
       //what is the bid?
       // who is making it
       this.overlay= true
+
       return null
     },
     scoreRound: function() {

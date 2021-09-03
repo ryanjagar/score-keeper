@@ -1,18 +1,17 @@
 <template>
  
   <div class="hello"> 
-
+    
     <v-card
     class="mx-auto"
     max-width="500"
     >
-
     <v-toolbar
       color=""
-      dark
+      
     >
       <v-spacer> </v-spacer>
-      <v-toolbar-title> <h2>Score </h2> </v-toolbar-title>
+      <v-toolbar-title> <h1>500 </h1> </v-toolbar-title>
     
       <v-spacer></v-spacer>
 
@@ -57,12 +56,9 @@
       </v-row>
     </v-container>
   </v-card>
-  <div class="pt-5 pb-2 text-h4">
-  Bid Table
-
-  </div>
+ 
     <v-card 
-      class="bid-table  mx-auto"
+      class="bid-table  mx-auto pt-5"
       max-width="500"
     >
     <v-card-text>
@@ -105,31 +101,30 @@
     <v-expand-transition
       v-if="overlay"
     >
+    
       <v-card
         class="transition-fast-in-fast-out v-card--reveal"
         style="height: 100%;"
       >
-    
+        <v-system-bar
+          lights-out
+        >
+          <v-spacer></v-spacer>
+          <v-icon @click="clearRound()">mdi-close</v-icon>
+        </v-system-bar>
         <v-card-text>
           <div class="text-h4 pb-4">
             {{teams[game.currentRound.team].name}} calls:
           </div>
-          {{game.currentRound}}
           <div class="text-center text-h4 pa-4">
             {{game.currentRound.bid.shortCode[0]}}
             <v-icon large> {{game.currentRound.bid.icon}} </v-icon>
           </div>
           <v-btn
             color="success"
-            @click="scoreRound()"
+            @click="scoring=true"
           >
-            Score Round
-          </v-btn>
-          <v-btn
-            color="error"
-            @click="clearRound()"
-          >
-            Cancel
+            End Round
           </v-btn>
         </v-card-text>
       </v-card>
@@ -141,25 +136,58 @@
         class="transition-fast-in-fast-out v-card--reveal"
         style="height: 100%;"
       >
+       <v-system-bar
+          lights-out
+        >
+          <v-spacer></v-spacer>
+          <v-icon @click="scoring=false">mdi-close</v-icon>
+        </v-system-bar>
       
         <v-card-text>
-          <div class="text-center text-h4 pa-4">
-            Did  {{biddingTeam.name}} Win:
-            {{game.currentRound.bid.shortCode[0]}}
+         
+          <div class="text-center text-h5 ma-3">
+            Did {{biddingTeam.name}} win:
+            {{game.currentRound.bid.shortCode[0]}}?
             <v-icon large> {{game.currentRound.bid.icon}} </v-icon>
           </div>
+          <v-btn-toggle>
           <v-btn
+            @click="game.currentRound.bidWon = true"
+          
+          >
+           yes
+          </v-btn>
+          <v-btn
+            @click="game.currentRound.bidWon=false"
+          >
+           no
+          </v-btn>
+          </v-btn-toggle>
+              
+          <div class="text-center text-h5 pb-4">
+           How many tricks did {{defendingTeam.name}} take?
+            <v-row>
+               <v-spacer></v-spacer>
+        <v-col
+          cols="12"
+          sm="6"
+          md="3"
+        >
+       
+            <v-text-field
+           
+            label="Tricks"
+            v-model="game.currentRound.tricksTaken">
+            </v-text-field>
+        </v-col>
+         <v-spacer></v-spacer>
+            </v-row>
+          </div>
+             <v-btn
             color="success"
             @click="scoreRound()"
           >
             Score Round
-          </v-btn>
-              
-          <v-btn
-            color="error"
-            @click="clearRound()"
-            >
-            Cancel
           </v-btn>
         </v-card-text>
       </v-card> 
@@ -223,7 +251,7 @@ export default {
                 "team": {},
                 "bid":{},
                 "bidWon": true,
-                "tricksTaken": 0
+                "tricksTaken": null,
               } , 
             "history": []}
     }             
@@ -235,12 +263,22 @@ export default {
     currentBid: function (){
       return this.game.currentRound.bid
       
-    }
+    },
+    defendingTeam: function () {
+      if (this.biddingTeam){
+        if (this.game.currentRound.team == 0){
+          return this.teams[1]
+        }
+        else 
+          return this.teams[0]
+      }
+    },
   },
   methods: {
     scoreRow: function (row) {
       return Object.entries(row)
     },
+   
     newGame: function () {
       return null
       
@@ -270,9 +308,10 @@ export default {
       else
         this.biddingTeam.score -= this.game.currentRound.bid.points
       
+      this.defendingTeam.score += (this.game.currentRound.tricksTaken * 10)
       
-      this.scoring = true
-      //this.clearRound()
+      this.scoring = false
+      this.clearRound()
       //what was the result of the bid? Won? Lost?
       //how many points did the other team make
       //add or subtract the points from the bidder

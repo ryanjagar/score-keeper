@@ -18,7 +18,6 @@
 
      
     </v-toolbar>
-    {{game.currentRound}}
     <v-container>
       <v-row dense>
         <v-col
@@ -26,9 +25,19 @@
           :key="team.name"
           cols= 6
         >
-          <!--<v-card
-            @click="game.currentRound=team"> -->
-          <v-card>
+          <v-card
+            @click="setATeam(index, team)"
+            >
+            <v-overlay
+              absolute
+              :value="isBidder(index)"
+              opacity="0.8" 
+              color="success" 
+            >
+            <div
+            class="text-h2">Bidding</div>
+            </v-overlay>
+            
             <v-img
               :src=team.img
               class="white--text align-top"
@@ -40,7 +49,6 @@
               <v-card-title v-text="team.name" class="text-h3"> </v-card-title>
               
                <div class="text-h1"> {{team.score}}  </div>
-               {{index}}
             </v-img>
 
             
@@ -51,15 +59,12 @@
   </v-card>
   <div class="pt-5 pb-2 text-h4">
   Bid Table
+
   </div>
     <v-card 
       class="bid-table  mx-auto"
       max-width="500"
     >
-
-   
-    
-
     <v-card-text>
       <v-row dense>
     <v-col>
@@ -98,51 +103,68 @@
     </v-card-text>
 
     <v-expand-transition
-        v-if="overlay"
-        >
-    <v-card
-      class="transition-fast-in-fast-out v-card--reveal"
-      style="height: 100%;"
+      v-if="overlay"
     >
+      <v-card
+        class="transition-fast-in-fast-out v-card--reveal"
+        style="height: 100%;"
+      >
     
-    <v-card-text>
-      <div class="text-center text-h4 pb-4">
-      Whose bid is it?</div>
-      <v-btn-toggle>
-        <v-btn>
-            {{teams[0].name}}
-        </v-btn>
-        <v-btn>
-          {{teams[1].name}}
-        </v-btn>
-
-        
-      </v-btn-toggle>
-      <div class="text-center text-h4 pa-4">
-        {{game.currentRound.bid.shortCode[0]}}
-        <v-icon large> {{game.currentRound.bid.icon}} </v-icon>
-   
-      </div>
-
-        <v-btn
+        <v-card-text>
+          <div class="text-h4 pb-4">
+            {{teams[game.currentRound.team].name}} calls:
+          </div>
+          {{game.currentRound}}
+          <div class="text-center text-h4 pa-4">
+            {{game.currentRound.bid.shortCode[0]}}
+            <v-icon large> {{game.currentRound.bid.icon}} </v-icon>
+          </div>
+          <v-btn
             color="success"
-            @click="overlay = false"
+            @click="scoreRound()"
           >
             Score Round
           </v-btn>
-          
-        <v-btn
+          <v-btn
             color="error"
-            @click="overlay = false"
+            @click="clearRound()"
           >
             Cancel
           </v-btn>
-          </v-card-text>
-        </v-card>
-      </v-expand-transition>
-        <!-- </v-overlay> -->
-    
-    </v-card>
+        </v-card-text>
+      </v-card>
+    </v-expand-transition>
+    <v-expand-transition
+        v-if="scoring"
+        >
+      <v-card
+        class="transition-fast-in-fast-out v-card--reveal"
+        style="height: 100%;"
+      >
+      
+        <v-card-text>
+          <div class="text-center text-h4 pa-4">
+            Did  {{biddingTeam.name}} Win:
+            {{game.currentRound.bid.shortCode[0]}}
+            <v-icon large> {{game.currentRound.bid.icon}} </v-icon>
+          </div>
+          <v-btn
+            color="success"
+            @click="scoreRound()"
+          >
+            Score Round
+          </v-btn>
+              
+          <v-btn
+            color="error"
+            @click="clearRound()"
+            >
+            Cancel
+          </v-btn>
+        </v-card-text>
+      </v-card> 
+    </v-expand-transition>
+  </v-card>
     
    
   </div>
@@ -153,7 +175,9 @@ export default {
   name: 'FiveHundred',
   data () {
     return {
+      selected: false,
       overlay: false,
+      scoring: false,
       absolute: true,
       teams: [{"name":"Us", "bid": "", "score": 210, "img": "https://picsum.photos/200"},{"name": "Them", "bid":"", "score": -400, "img": "https://picsum.photos/201"} ],
       bidder: 0,
@@ -197,13 +221,21 @@ export default {
       },
       game: {"currentRound":{
                 "team": {},
-                "bid":{}
+                "bid":{},
+                "bidWon": true,
+                "tricksTaken": 0
               } , 
             "history": []}
-    
-      
     }             
-   
+  },
+  computed: {
+    biddingTeam: function () {
+      return this.teams[this.game.currentRound.team]
+    },
+    currentBid: function (){
+      return this.game.currentRound.bid
+      
+    }
   },
   methods: {
     scoreRow: function (row) {
@@ -215,16 +247,45 @@ export default {
     },
     makeABid: function (bid) {
       this.game.currentRound.bid = bid
-      //what is the bid?
-      // who is making it
-      this.overlay= true
-
+      console.log(this.game.currentRound.team)
+      if (this.game.currentRound.team == 0 || this.game.currentRound.team == 1)
+        this.overlay= true
       return null
     },
+    setATeam: function(team) {
+      console.log(`Team: ${team}`)
+      this.game.currentRound.team = team
+      if (this.game.currentRound.bid.shortCode)
+        this.overlay= true
+    },
+    isBidder: function (selectedTeam) {
+      if (this.game.currentRound.team == selectedTeam){
+        return true   
+      }
+      return false
+    },
     scoreRound: function() {
-      //what was the result of the bid?
+      if (this.game.currentRound.bidWon == true)
+        this.biddingTeam.score += this.game.currentRound.bid.points
+      else
+        this.biddingTeam.score -= this.game.currentRound.bid.points
+      
+      
+      this.scoring = true
+      //this.clearRound()
+      //what was the result of the bid? Won? Lost?
       //how many points did the other team make
-      //update the teams' score
+      //add or subtract the points from the bidder
+      //add points for tricks taken
+      //check for a winner (over 500 or under -500)
+    },
+    clearRound: function () {
+      this.game.currentRound.bid= {}
+      this.game.currentRound.team= {}
+      this.game.currentRound.tricksTaken= 0
+      this.overlay= false
+      this.scoring= false
+      
     } 
     
   } 

@@ -4,8 +4,28 @@
     
     <v-card
     class="mx-auto"
-    max-width="500"
+    max-width="450"
     >
+    <v-overlay
+      :value="winner">
+      <v-card>
+        <div 
+        class="mx-auto text-h1 pa-6 ma-6">
+        {{winner}} wins!
+      </div>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        
+      <v-btn
+      color="success"
+      
+      @click="newGame()">
+        New game
+      </v-btn>
+       <v-spacer></v-spacer>
+      </v-card-actions>
+      </v-card>
+    </v-overlay>
     <v-toolbar
       color=""
       
@@ -59,28 +79,36 @@
  
     <v-card 
       class="bid-table  mx-auto pt-5"
-      max-width="500"
+      max-width="450"
     >
     <v-card-text>
-      <v-row dense>
-    <v-col>
-    </v-col>
-          <v-col>
-            Spades
-          </v-col>
-          <v-col>
-            Clubs
-          </v-col>
-          <v-col>
-            Diamonds
-          </v-col>
-          <v-col>
-            Hearts
-          </v-col>
-          <v-col>
-            No Trump
-          </v-col>
+      <v-container fill-height fluid>
+      <v-row 
+        
+        align="center"
+      justify="center">
+      
+      <v-col>
+      </v-col>
+        
+        <v-col>
+          <span>Spades</span>
+        </v-col>
+        <v-col>
+          
+          <span>Clubs</span>
+        </v-col>
+        <v-col>
+          <span>Diamonds</span>
+        </v-col>
+        <v-col>
+          <span>Hearts</span>
+        </v-col>
+        <v-col>
+          <span>No Trump</span>
+        </v-col>
       </v-row>
+      </v-container>
       <v-row 
         v-for="(bids, index) in bidSheet" :key="bids.index" 
         dense
@@ -117,7 +145,7 @@
             {{teams[game.currentRound.team].name}} calls:
           </div>
           <div class="text-center text-h4 pa-4">
-            {{game.currentRound.bid.shortCode[0]}}
+            {{game.currentRound.bid.shortCode.slice(0,-1)}}
             <v-icon large> {{game.currentRound.bid.icon}} </v-icon>
           </div>
           <v-btn
@@ -145,9 +173,9 @@
       
         <v-card-text>
          
-          <div class="text-center text-h5 ma-3">
+          <div class="text-center text-h5 pt-0 mt-0 mb-3">
             Did {{biddingTeam.name}} win:
-            {{game.currentRound.bid.shortCode[0]}}?
+            {{game.currentRound.bid.shortCode.slice(0,-1)}}?
             <v-icon large> {{game.currentRound.bid.icon}} </v-icon>
           </div>
           <v-btn-toggle>
@@ -164,7 +192,7 @@
           </v-btn>
           </v-btn-toggle>
               
-          <div class="text-center text-h5 pb-4">
+          <div class="text-center text-h5 mb-2 mt-4">
            How many tricks did {{defendingTeam.name}} take?
             <v-row>
                <v-spacer></v-spacer>
@@ -183,6 +211,7 @@
          <v-spacer></v-spacer>
             </v-row>
           </div>
+          
              <v-btn
             color="success"
             @click="scoreRound()"
@@ -211,35 +240,35 @@ export default {
       bidder: 0,
       //bidSheet should be a added as a mixin
       bidSheet: {
-        "Six": {
+        "6": {
           "spades": {"points": 40, "shortCode": "6S", "icon": "mdi-cards-spade" },
           "clubs": {"points": 60, "shortCode": "6C", "icon": "mdi-cards-club" },
           "diamonds": {"points": 80, "shortCode": "6D", "icon": "mdi-cards-diamond" },
           "hearts": {"points": 100, "shortCode": "6H", "icon": "mdi-cards-heart" },
           "notrump":{"points": 120, "shortCode": "6NT", "icon": "mdi-cards" }
         },
-        "Seven": {
+        "7": {
           "spades": {"points": 140, "shortCode": "7S", "icon": "mdi-cards-spade" },
           "clubs": {"points": 160, "shortCode": "7C", "icon": "mdi-cards-club" },
           "diamonds": {"points": 180, "shortCode": "7D", "icon": "mdi-cards-diamond" },
           "hearts": {"points": 200, "shortCode": "7H", "icon": "mdi-cards-heart" },
           "notrump":{"points": 220, "shortCode": "7NT", "icon": "mdi-cards" }
         },
-        "Eight": {
+        "8": {
           "spades": {"points": 240, "shortCode": "8S", "icon": "mdi-cards-spade" },
           "clubs": {"points": 260, "shortCode": "8C", "icon": "mdi-cards-club" },
           "diamonds": {"points": 280, "shortCode": "8D", "icon": "mdi-cards-diamond" },
           "hearts": {"points": 300, "shortCode": "8H", "icon": "mdi-cards-heart" },
           "notrump":{"points": 320, "shortCode": "8NT", "icon": "mdi-cards" }
         },
-        "Nine": {
+        "9": {
           "spades": {"points": 340, "shortCode": "9S", "icon": "mdi-cards-spade" },
           "clubs": {"points": 360, "shortCode": "9C", "icon": "mdi-cards-club" },
           "diamonds": {"points": 380, "shortCode": "9D", "icon": "mdi-cards-diamond" },
           "hearts": {"points": 400, "shortCode": "9H", "icon": "mdi-cards-heart" },
           "notrump":{"points": 420, "shortCode": "9NT", "icon": "mdi-cards" }
         },
-        "Ten": {
+        "10": {
           "spades": {"points": 440, "shortCode": "10S", "icon": "mdi-cards-spade" },
           "clubs": {"points": 460, "shortCode": "10C", "icon": "mdi-cards-club" },
           "diamonds": {"points": 480, "shortCode": "10D", "icon": "mdi-cards-diamond" },
@@ -247,6 +276,7 @@ export default {
           "notrump":{"points": 520, "shortCode": "10NT", "icon": "mdi-cards" }
         }
       },
+      winner: "",
       game: {"currentRound":{
                 "team": {},
                 "bid":{},
@@ -280,8 +310,11 @@ export default {
     },
    
     newGame: function () {
-      return null
-      
+      this.clearRound()
+      for (const i of this.teams){
+        i.score=0
+      }
+      this.winner=""
     },
     makeABid: function (bid) {
       this.game.currentRound.bid = bid
@@ -307,21 +340,24 @@ export default {
         this.biddingTeam.score += this.game.currentRound.bid.points
       else
         this.biddingTeam.score -= this.game.currentRound.bid.points
-      
       this.defendingTeam.score += (this.game.currentRound.tricksTaken * 10)
-      
       this.scoring = false
+      if (this.isWinner())
+        console.log('Winner!')
       this.clearRound()
-      //what was the result of the bid? Won? Lost?
-      //how many points did the other team make
-      //add or subtract the points from the bidder
-      //add points for tricks taken
-      //check for a winner (over 500 or under -500)
+    },
+    isWinner: function () {
+      for (const i of this.teams) {
+        if (i.score >= 500){
+          this.winner= i.name
+        }
+      }
+      return null
     },
     clearRound: function () {
       this.game.currentRound.bid= {}
       this.game.currentRound.team= {}
-      this.game.currentRound.tricksTaken= 0
+      this.game.currentRound.tricksTaken= null
       this.overlay= false
       this.scoring= false
       

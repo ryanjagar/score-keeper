@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const express = require('express');
 const webpack = require('webpack');
 const webpackMiddleware = require('webpack-dev-middleware');
@@ -31,4 +32,6 @@ app.listen(port, () => {
 
 // Register app and middleware. Required for better
 // performance when running from play.js
+
+// eslint-disable-next-line no-empty
 try { pjs.register(app, middleware); } catch (error) { }

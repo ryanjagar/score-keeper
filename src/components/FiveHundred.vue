@@ -302,6 +302,7 @@ export default {
         else 
           return this.teams[0]
       }
+      return null
     },
   },
   methods: {

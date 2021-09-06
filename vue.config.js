@@ -1,4 +1,5 @@
 module.exports = {
+  publicPath: '/score-keeper/',
   css: {
     loaderOptions: {
       sass: {

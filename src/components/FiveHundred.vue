@@ -236,7 +236,7 @@ export default {
       overlay: false,
       scoring: false,
       absolute: true,
-      teams: [{"name":"Us", "bid": "", "score": 210, "img": "https://picsum.photos/200"},{"name": "Them", "bid":"", "score": -400, "img": "https://picsum.photos/201"} ],
+      teams: [{"name":"Us", "bid": "", "score": 0, "img": "https://picsum.photos/200"},{"name": "Them", "bid":"", "score": 0, "img": "https://picsum.photos/201"} ],
       bidder: 0,
       //bidSheet should be a added as a mixin
       bidSheet: {
@@ -352,6 +352,10 @@ export default {
         if (i.score >= 500){
           this.winner= i.name
         }
+        else if (i.score < -500){
+          //Assume that the bidding team lost their bid and 
+          //went out the back door 
+          this.winner=this.defendingTeam.name}
       }
       return null
     },

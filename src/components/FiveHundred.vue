@@ -1,9 +1,9 @@
 <template>
  
   <div class="hello"> 
-    
+  
     <v-card
-    class="mx-auto"
+    class="mx-auto overflow-hidden"
     max-width="450"
     >
     <v-overlay
@@ -25,18 +25,46 @@
        <v-spacer></v-spacer>
       </v-card-actions>
       </v-card>
+
     </v-overlay>
     <v-toolbar
       color=""
       
     >
-      <v-spacer> </v-spacer>
-      <v-toolbar-title> <h1>500 </h1> </v-toolbar-title>
-    
       <v-spacer></v-spacer>
-
+      <v-toolbar-title> <h1>500 </h1></v-toolbar-title>
+    <v-spacer></v-spacer>
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
      
     </v-toolbar>
+     <v-navigation-drawer
+      v-model="drawer"
+      right
+      absolute
+      temporary
+      width="150"
+    >
+      <v-list
+        nav
+        dense
+      >
+        <v-list-item-group
+          v-model="group"
+        >
+          <v-list-item
+           @click="newGame()">
+            <v-list-item-title  
+            >
+              New Game
+            </v-list-item-title>
+          </v-list-item>
+
+          <v-list-item>
+            <v-list-item-title>Rules</v-list-item-title>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-navigation-drawer>
     <v-container>
       <v-row dense>
         <v-col
@@ -236,6 +264,8 @@ export default {
       overlay: false,
       scoring: false,
       absolute: true,
+      drawer: false,
+      group: null,
       teams: [{"name":"Us", "bid": "", "score": 0, "img": "https://picsum.photos/200"},{"name": "Them", "bid":"", "score": 0, "img": "https://picsum.photos/201"} ],
       bidder: 0,
       //bidSheet should be a added as a mixin
@@ -286,6 +316,11 @@ export default {
             "history": []}
     }             
   },
+  watch: {
+      group () {
+        this.drawer = false
+      },
+    },
   computed: {
     biddingTeam: function () {
       return this.teams[this.game.currentRound.team]

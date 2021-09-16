@@ -117,50 +117,67 @@
           align="center"
           justify="center"
         >
-        <v-col>
+        <v-col
+          cols=2>
         </v-col>
             
             <v-col>
-            <span>Spades</span>
+             <v-icon large>mdi-cards-spade</v-icon>
             </v-col>
             <v-col>
             
-            <span>Clubs</span>
+             <v-icon large>mdi-cards-club</v-icon>
+            
             </v-col>
             <v-col>
-            <span>Diamonds</span>
+            <v-icon large>mdi-cards-diamond</v-icon>
+            
             </v-col>
             <v-col>
-            <span>Hearts</span>
+             <v-icon large>mdi-cards-heart</v-icon>
             </v-col>
             <v-col>
             <span>No Trump</span>
             </v-col>
         </v-row>
       </v-container>
-    
+     
       <v-row 
         v-for="(bids, index) in bidSheet" :key="bids.index" 
         dense
       >
        
-        <v-col>
+        <v-col
+          >
           {{index}}
         </v-col>
        
         <v-col
             v-for="bid in bids"
-            :key="bid.index">
+            :key="bid.index"
+            >
               <v-btn 
                 @click= "makeABid(bid)"
-                tile
+                
               >
                 {{bid.points}}
               </v-btn>
         </v-col>
         
       </v-row>
-     
+      <v-row>
+        <v-col
+        cols=1>
+        </v-col>
+        <v-col>
+          <v-btn> misere</v-btn>
+        </v-col>
+
+        <v-col>
+          <v-btn> open misere</v-btn>
+        </v-col>
+      </v-row>
+
     </v-card-text>
  
     <v-expand-transition

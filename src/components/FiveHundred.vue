@@ -158,7 +158,6 @@
             >
               <v-btn 
                 @click= "makeABid(bid)"
-                
               >
                 {{bid.points}}
               </v-btn>
@@ -170,11 +169,17 @@
         cols=1>
         </v-col>
         <v-col>
-          <v-btn> misere</v-btn>
+          <v-btn
+            @click= "makeABid(misereBids.closedMisere)"
+          > 
+            misere</v-btn>
         </v-col>
 
         <v-col>
-          <v-btn> open misere</v-btn>
+          <v-btn
+            click= "makeABid(misereBids.openMisere)">
+            open misere
+          </v-btn>
         </v-col>
       </v-row>
 
@@ -329,6 +334,10 @@ export default {
           "hearts": {"points": 500, "shortCode": "10H", "icon": "mdi-cards-heart" },
           "notrump":{"points": 520, "shortCode": "10NT", "icon": "mdi-cards" }
         }
+      },
+      misereBids:{
+        "openMisere": {"points": 500, "shortCode": "OM", "icon": "mdi-cards" },
+        "closedMisere": {"points": 250, "shortCode": "CM", "icon": "mdi-cards"}
       },
       winner: "",
       game: {"currentRound":{

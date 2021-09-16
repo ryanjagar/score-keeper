@@ -384,7 +384,6 @@ export default {
       this.defendingTeam.score += (this.game.currentRound.tricksTaken * 10)
       this.scoring = false
       if (this.isWinner())
-        console.log('Winner!')
       this.clearRound()
     },
     isWinner: function () {
@@ -402,6 +401,7 @@ export default {
     clearRound: function () {
       this.game.currentRound.bid= {}
       this.game.currentRound.team= {}
+      this.game.currentRound.bidWon= 0
       this.game.currentRound.tricksTaken= null
       this.overlay= false
       this.scoring= false

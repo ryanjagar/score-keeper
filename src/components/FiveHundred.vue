@@ -400,7 +400,7 @@ export default {
         this.biddingTeam.score -= this.game.currentRound.bid.points
       this.defendingTeam.score += (this.game.currentRound.tricksTaken * 10)
       this.scoring = false
-      if (this.isWinner())
+      this.isWinner()
       this.clearRound()
     },
     isWinner: function () {

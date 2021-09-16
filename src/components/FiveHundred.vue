@@ -361,13 +361,11 @@ export default {
     },
     makeABid: function (bid) {
       this.game.currentRound.bid = bid
-      console.log(this.game.currentRound.team)
       if (this.game.currentRound.team == 0 || this.game.currentRound.team == 1)
         this.overlay= true
       return null
     },
     setATeam: function(team) {
-      console.log(`Team: ${team}`)
       this.game.currentRound.team = team
       if (this.game.currentRound.bid.shortCode)
         this.overlay= true

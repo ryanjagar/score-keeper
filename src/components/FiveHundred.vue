@@ -90,15 +90,11 @@
               class="white--text align-top"
               gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
               height="200px"
-              
             >
-              
               <v-card-title v-text="team.name" class="text-h3"> </v-card-title>
-              
-               <div class="text-h1"> {{team.score}}  </div>
+                
+              <div class="text-h1"> {{team.score}}  </div>
             </v-img>
-
-            
           </v-card>
         </v-col>
       </v-row>
@@ -109,51 +105,64 @@
       class="bid-table  mx-auto pt-5"
       max-width="450"
     >
+   
     <v-card-text>
-      <v-container fill-height fluid>
-      <v-row 
-        
-        align="center"
-      justify="center">
       
-      <v-col>
-      </v-col>
-        
+      <v-container 
+        fill-height 
+        fluid
+      >
+       
+        <v-row 
+          align="center"
+          justify="center"
+        >
         <v-col>
-          <span>Spades</span>
         </v-col>
-        <v-col>
-          
-          <span>Clubs</span>
-        </v-col>
-        <v-col>
-          <span>Diamonds</span>
-        </v-col>
-        <v-col>
-          <span>Hearts</span>
-        </v-col>
-        <v-col>
-          <span>No Trump</span>
-        </v-col>
-      </v-row>
+            
+            <v-col>
+            <span>Spades</span>
+            </v-col>
+            <v-col>
+            
+            <span>Clubs</span>
+            </v-col>
+            <v-col>
+            <span>Diamonds</span>
+            </v-col>
+            <v-col>
+            <span>Hearts</span>
+            </v-col>
+            <v-col>
+            <span>No Trump</span>
+            </v-col>
+        </v-row>
       </v-container>
+    
       <v-row 
         v-for="(bids, index) in bidSheet" :key="bids.index" 
         dense
       >
+       
         <v-col>
           {{index}}
         </v-col>
+       
         <v-col
             v-for="bid in bids"
             :key="bid.index">
-              <v-btn @click= "makeABid(bid)">
+              <v-btn 
+                @click= "makeABid(bid)"
+                tile
+              >
                 {{bid.points}}
               </v-btn>
         </v-col>
+        
       </v-row>
+     
     </v-card-text>
-
+ 
     <v-expand-transition
       v-if="overlay"
     >
@@ -203,21 +212,18 @@
          
           <div class="text-center text-h5 pt-0 mt-0 mb-3">
             Did {{biddingTeam.name}} win:
-            {{game.currentRound.bid.shortCode.slice(0,-1)}}?
-            <v-icon large> {{game.currentRound.bid.icon}} </v-icon>
+            {{game.currentRound.bid.shortCode.slice(0,-1)}}
+            <v-icon large> {{game.currentRound.bid.icon}} </v-icon> ?
           </div>
-          <v-btn-toggle>
-          <v-btn
-            @click="game.currentRound.bidWon = true"
-          
+          <v-btn-toggle
+            v-model=game.currentRound.bidWon
           >
-           yes
-          </v-btn>
-          <v-btn
-            @click="game.currentRound.bidWon=false"
-          >
-           no
-          </v-btn>
+            <v-btn>
+            yes
+            </v-btn>
+            <v-btn>
+            no
+            </v-btn>
           </v-btn-toggle>
               
           <div class="text-center text-h5 mb-2 mt-4">
@@ -260,6 +266,7 @@ export default {
   name: 'FiveHundred',
   data () {
     return {
+      
       selected: false,
       overlay: false,
       scoring: false,
@@ -310,7 +317,7 @@ export default {
       game: {"currentRound":{
                 "team": {},
                 "bid":{},
-                "bidWon": true,
+                "bidWon": 0,
                 "tricksTaken": null,
               } , 
             "history": []}
@@ -372,7 +379,7 @@ export default {
       return false
     },
     scoreRound: function() {
-      if (this.game.currentRound.bidWon == true)
+      if (this.game.currentRound.bidWon == 0)
         this.biddingTeam.score += this.game.currentRound.bid.points
       else
         this.biddingTeam.score -= this.game.currentRound.bid.points
